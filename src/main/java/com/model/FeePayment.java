@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class FeePayment {
     private int paymentId;
-    private int studentId;
+    private String studentId; // Changed from int to String
     private String studentName;
     private Date paymentDate;
     private double amount;
@@ -19,11 +19,11 @@ public class FeePayment {
         this.paymentId = paymentId;
     }
 
-    public int getStudentId() {
+    public String getStudentId() {
         return studentId;
     }
 
-    public void setStudentId(int studentId) {
+    public void setStudentId(String studentId) {
         this.studentId = studentId;
     }
 

@@ -218,6 +218,18 @@
       <h3>Update Fields</h3>
 
       <div class="form-group">
+        <label for="studentId">Student ID</label>
+        <input
+          type="text"
+          id="studentId"
+          name="studentId"
+          placeholder="Enter student ID"
+          autocomplete="off"
+          required
+        />
+      </div>
+
+      <div class="form-group">
         <label for="studentName">Student Name</label>
         <input
           type="text"
@@ -279,6 +291,7 @@
     const previewDetails = document.getElementById('previewDetails');
 
     // Inputs for update fields
+    const studentIdInput = document.getElementById('studentId');
     const studentNameInput = document.getElementById('studentName');
     const amountInput = document.getElementById('amount');
     const paymentDateInput = document.getElementById('paymentDate');
@@ -287,7 +300,8 @@
     // Enable update button only if paymentId is valid and required fields are filled
     function validateForm() {
       const validPaymentId = /^[A-Z0-9]+$/.test(paymentIdInput.value.trim());
-      const requiredFieldsFilled = studentNameInput.value.trim() !== '' &&
+      const requiredFieldsFilled = studentIdInput.value.trim() !== '' &&
+                                  studentNameInput.value.trim() !== '' &&
                                   amountInput.value.trim() !== '' &&
                                   paymentDateInput.value.trim() !== '' &&
                                   statusSelect.value !== '';
@@ -308,7 +322,7 @@
     });
 
     // Update button enabled state on other inputs
-    [studentNameInput, amountInput, paymentDateInput, statusSelect].forEach(el =>
+    [studentIdInput, studentNameInput, amountInput, paymentDateInput, statusSelect].forEach(el =>
       el.addEventListener('input', validateForm)
     );
 
@@ -317,6 +331,7 @@
       setTimeout(() => {
         const mockPaymentData = {
           id: paymentId,
+          studentId: 'STU001',
           studentName: 'John Doe',
           amount: '₹2500.00',
           date: new Date().toISOString().slice(0,10), // yyyy-mm-dd format
@@ -325,6 +340,7 @@
         displayPaymentPreview(mockPaymentData);
 
         // Pre-fill update fields with mock data
+        studentIdInput.value = mockPaymentData.studentId;
         studentNameInput.value = mockPaymentData.studentName;
         amountInput.value = parseFloat(mockPaymentData.amount.replace(/[₹,]/g, '')).toFixed(2);
         paymentDateInput.value = mockPaymentData.date;
@@ -337,6 +353,7 @@
     function displayPaymentPreview(data) {
       previewDetails.innerHTML = `
         <div><span>Payment ID:</span><span>${data.id}</span></div>
+        <div><span>Student ID:</span><span>${data.studentId}</span></div>
         <div><span>Student Name:</span><span>${data.studentName}</span></div>
         <div><span>Amount:</span><span>${data.amount}</span></div>
         <div><span>Date:</span><span>${data.date}</span></div>

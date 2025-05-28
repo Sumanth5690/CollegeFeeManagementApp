@@ -354,38 +354,38 @@
     </nav>
 
     <section class="hero">
-        <h1>Manage college fees,<br><span class="hero-highlight">in no time.</span></h1>
+        <h1> College Fee Manager<br><span class="hero-highlight">App</span></h1>
     </section>
 
     <section class="services">
         <div class="services-grid">
             <div class="service-card">
                 <div class="service-icon"><i class="fas fa-plus"></i></div>
-                <h3>Payment Processing</h3>
-                <p>Quickly add new fee payments with our streamlined interface. Support for multiple payment methods and instant verification.</p>
+                <h3>Add feePayment</h3>
+                <p>add new fee payments with our streamlined interface</p>
                 <a href="feepaymentadd.jsp" class="service-link">Add Payment <i class="fas fa-arrow-right"></i></a>
             </div>
             <div class="service-card">
                 <div class="service-icon"><i class="fas fa-edit"></i></div>
-                <h3>Payment Management</h3>
-                <p>Update existing payment records with ease. Modify payment details, status, and maintain accurate financial records.</p>
+                <h3>Update feePayment</h3>
+                <p>Update existing payment records with ease. Modify payment details with ease.</p>
                 <a href="feepaymentupdate.jsp" class="service-link">Update Records <i class="fas fa-arrow-right"></i></a>
             </div>
             <div class="service-card">
                 <div class="service-icon"><i class="fas fa-chart-bar"></i></div>
-                <h3>Financial Reports</h3>
-                <p>Generate comprehensive reports and analytics. Track payment trends, outstanding balances, and financial insights.</p>
+                <h3>FeePayment Reports</h3>
+                <p>Generate comprehensive reports based on status like paid,unpaid or overdue payments.</p>
                 <a href="report_form.jsp" class="service-link">View Reports <i class="fas fa-arrow-right"></i></a>
             </div>
             <div class="service-card">
                 <div class="service-icon"><i class="fas fa-eye"></i></div>
-                <h3>Payment Tracking</h3>
+                <h3>View allFeePayments</h3>
                 <p>Monitor all payment transactions in real-time. Search, filter, and organize payment data efficiently.</p>
                 <a href="feepaymentdisplay.jsp" class="service-link">Track Payments <i class="fas fa-arrow-right"></i></a>
             </div>
             <div class="service-card">
                 <div class="service-icon"><i class="fas fa-trash-alt"></i></div>
-                <h3>Record Management</h3>
+                <h3>Delete feePayment</h3>
                 <p>Clean up your database by removing outdated or incorrect payment records with proper authorization.</p>
                 <a href="feepaymentdelete.jsp" class="service-link">Manage Records <i class="fas fa-arrow-right"></i></a>
             </div>
@@ -395,14 +395,10 @@
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-links">
-                <a href="#">Privacy Policy</a>
-                <a href="#">Terms of Service</a>
-                <a href="#">Support</a>
-                <a href="#">Documentation</a>
-                <a href="#">Contact</a>
+              <p>&copy; 2025 College Fee Payment System. All rights reserved.</p>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2024 College Fee Payment System. All rights reserved.</p>
+                
             </div>
         </div>
     </footer>

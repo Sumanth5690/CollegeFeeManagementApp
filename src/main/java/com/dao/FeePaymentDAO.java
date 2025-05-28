@@ -17,8 +17,9 @@ public class FeePaymentDAO {
     private static final String SELECT_ALL_PAYMENTS_SQL = "SELECT * FROM FeePayments";
     private static final String SELECT_OVERDUE_SQL = "SELECT * FROM FeePayments WHERE Status='Overdue'";
     private static final String SELECT_UNPAID_SQL = "SELECT * FROM FeePayments WHERE PaymentDate < ? AND Status != 'Paid'";
-    private static final String TOTAL_COLLECTION_SQL = "SELECT SUM(Amount) FROM FeePayments WHERE PaymentDate BETWEEN ? AND ?AND Status = 'Paid'";
+    private static final String TOTAL_COLLECTION_SQL = "SELECT SUM(Amount) FROM FeePayments WHERE PaymentDate BETWEEN ? AND ? AND Status = 'Paid'";
     private static final String SELECT_PAYMENTS_BETWEEN_DATES_SQL = "SELECT * FROM FeePayments WHERE PaymentDate BETWEEN ? AND ? AND Status = 'Paid'";
+    private static final String TOTAL_PAID_SQL = "SELECT SUM(Amount) FROM FeePayments WHERE Status = 'Paid'";
 
     public Connection getConnection() throws SQLException {
         try {
@@ -33,7 +34,7 @@ public class FeePaymentDAO {
     public void insertPayment(FeePayment payment) throws SQLException {
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(INSERT_PAYMENT_SQL)) {
-            stmt.setInt(1, payment.getStudentId());
+            stmt.setString(1, payment.getStudentId());
             stmt.setString(2, payment.getStudentName());
             stmt.setDate(3, new java.sql.Date(payment.getPaymentDate().getTime()));
             stmt.setDouble(4, payment.getAmount());
@@ -45,15 +46,23 @@ public class FeePaymentDAO {
     public void updatePayment(FeePayment payment) throws SQLException {
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(UPDATE_PAYMENT_SQL)) {
-            stmt.setInt(1, payment.getStudentId());
+
+            if (payment.getStudentId() != null && !payment.getStudentId().trim().isEmpty()) {
+                stmt.setString(1, payment.getStudentId().trim());
+            } else {
+                stmt.setNull(1, java.sql.Types.VARCHAR);
+            }
+
             stmt.setString(2, payment.getStudentName());
             stmt.setDate(3, new java.sql.Date(payment.getPaymentDate().getTime()));
             stmt.setDouble(4, payment.getAmount());
             stmt.setString(5, payment.getStatus());
             stmt.setInt(6, payment.getPaymentId());
+
             stmt.executeUpdate();
         }
     }
+
 
     public void deletePayment(int paymentId) throws SQLException {
         try (Connection conn = getConnection();
@@ -71,7 +80,7 @@ public class FeePaymentDAO {
             while (rs.next()) {
                 FeePayment fp = new FeePayment();
                 fp.setPaymentId(rs.getInt("PaymentID"));
-                fp.setStudentId(rs.getInt("StudentID"));
+                fp.setStudentId(rs.getString("StudentID"));
                 fp.setStudentName(rs.getString("StudentName"));
                 fp.setPaymentDate(rs.getDate("PaymentDate"));
                 fp.setAmount(rs.getDouble("Amount"));
@@ -90,7 +99,7 @@ public class FeePaymentDAO {
             while (rs.next()) {
                 FeePayment fp = new FeePayment();
                 fp.setPaymentId(rs.getInt("PaymentID"));
-                fp.setStudentId(rs.getInt("StudentID"));
+                fp.setStudentId(rs.getString("StudentID"));
                 fp.setStudentName(rs.getString("StudentName"));
                 fp.setPaymentDate(rs.getDate("PaymentDate"));
                 fp.setAmount(rs.getDouble("Amount"));
@@ -110,7 +119,7 @@ public class FeePaymentDAO {
                 while (rs.next()) {
                     FeePayment fp = new FeePayment();
                     fp.setPaymentId(rs.getInt("PaymentID"));
-                    fp.setStudentId(rs.getInt("StudentID"));
+                    fp.setStudentId(rs.getString("StudentID"));
                     fp.setStudentName(rs.getString("StudentName"));
                     fp.setPaymentDate(rs.getDate("PaymentDate"));
                     fp.setAmount(rs.getDouble("Amount"));
@@ -136,21 +145,18 @@ public class FeePaymentDAO {
         }
         return total;
     }
-    
-    // Fixed method with consistent naming
+
     public List<FeePayment> getPaymentsBetweenDates(Date startDate, Date endDate) throws SQLException {
         List<FeePayment> list = new ArrayList<>();
-        
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(SELECT_PAYMENTS_BETWEEN_DATES_SQL)) {
             stmt.setDate(1, new java.sql.Date(startDate.getTime()));
             stmt.setDate(2, new java.sql.Date(endDate.getTime()));
-            
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     FeePayment fp = new FeePayment();
                     fp.setPaymentId(rs.getInt("PaymentID"));
-                    fp.setStudentId(rs.getInt("StudentID"));
+                    fp.setStudentId(rs.getString("StudentID"));
                     fp.setStudentName(rs.getString("StudentName"));
                     fp.setPaymentDate(rs.getDate("PaymentDate"));
                     fp.setAmount(rs.getDouble("Amount"));

@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="java.util.*, com.model.FeePayment" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
   <style>
-    /* === Base Styles === */
+    /* Base Styles */
     body {
       margin: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -49,14 +49,12 @@
       font-weight: 600;
       color: #94a3b8;
       text-align: center;
-      user-select: none;
     }
 
     .date-range {
       text-align: center;
       color: #94a3b8;
       font-size: 1rem;
-      user-select: none;
     }
 
     table {
@@ -70,7 +68,6 @@
 
     thead {
       background-color: #27272a;
-      user-select: none;
     }
 
     th, td {
@@ -89,7 +86,6 @@
     tbody tr:hover {
       background-color: #3b82f6;
       color: #fff;
-      cursor: default;
     }
 
     tbody tr:last-child td {
@@ -109,7 +105,6 @@
       color: #3b82f6;
       text-align: right;
       margin-top: 1rem;
-      user-select: none;
     }
 
     a.back-link {
@@ -123,7 +118,6 @@
       padding: 0.5rem 1.5rem;
       border-radius: 12px;
       transition: background-color 0.2s ease;
-      user-select: none;
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
@@ -134,7 +128,6 @@
       color: white;
     }
 
-    /* Responsive */
     @media (max-width: 640px) {
       th, td {
         font-size: 0.85rem;
@@ -167,6 +160,7 @@
           reportTitle = "Total Collection Report";
       }
     %>
+
     <div class="report-title"><%= reportTitle %></div>
 
     <% if (startDate != null && endDate != null) { %>
@@ -193,8 +187,8 @@
         %>
           <tr>
             <td><%= p.getPaymentId() %></td>
-            <td><%= p.getStudentId() %></td>
-            <td><%= p.getStudentName() %></td>
+            <td><%= p.getStudentId() != null ? p.getStudentId() : "N/A" %></td>
+            <td><%= p.getStudentName() != null ? p.getStudentName() : "N/A" %></td>
             <td><%= p.getPaymentDate() != null ? p.getPaymentDate() : "N/A" %></td>
             <td>₹<%= String.format("%.2f", p.getAmount()) %></td>
             <td><%= p.getStatus() != null ? p.getStatus() : "N/A" %></td>
