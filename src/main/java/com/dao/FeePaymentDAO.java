@@ -33,7 +33,7 @@ public class FeePaymentDAO {
 
     public void insertPayment(FeePayment payment) throws SQLException {
         try (Connection conn = getConnection();
-             PreparedStatement stmt = conn.prepareStatement(INSERT_PAYMENT_SQL)) {
+                PreparedStatement stmt = conn.prepareStatement(INSERT_PAYMENT_SQL)) {
             stmt.setString(1, payment.getStudentId());
             stmt.setString(2, payment.getStudentName());
             stmt.setDate(3, new java.sql.Date(payment.getPaymentDate().getTime()));
@@ -45,7 +45,7 @@ public class FeePaymentDAO {
 
     public void updatePayment(FeePayment payment) throws SQLException {
         try (Connection conn = getConnection();
-             PreparedStatement stmt = conn.prepareStatement(UPDATE_PAYMENT_SQL)) {
+                PreparedStatement stmt = conn.prepareStatement(UPDATE_PAYMENT_SQL)) {
 
             if (payment.getStudentId() != null && !payment.getStudentId().trim().isEmpty()) {
                 stmt.setString(1, payment.getStudentId().trim());
@@ -63,10 +63,9 @@ public class FeePaymentDAO {
         }
     }
 
-
     public void deletePayment(int paymentId) throws SQLException {
         try (Connection conn = getConnection();
-             PreparedStatement stmt = conn.prepareStatement(DELETE_PAYMENT_SQL)) {
+                PreparedStatement stmt = conn.prepareStatement(DELETE_PAYMENT_SQL)) {
             stmt.setInt(1, paymentId);
             stmt.executeUpdate();
         }
@@ -75,8 +74,8 @@ public class FeePaymentDAO {
     public List<FeePayment> getAllPayments() throws SQLException {
         List<FeePayment> list = new ArrayList<>();
         try (Connection conn = getConnection();
-             PreparedStatement stmt = conn.prepareStatement(SELECT_ALL_PAYMENTS_SQL);
-             ResultSet rs = stmt.executeQuery()) {
+                PreparedStatement stmt = conn.prepareStatement(SELECT_ALL_PAYMENTS_SQL);
+                ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 FeePayment fp = new FeePayment();
                 fp.setPaymentId(rs.getInt("PaymentID"));
@@ -94,8 +93,8 @@ public class FeePaymentDAO {
     public List<FeePayment> getOverduePayments() throws SQLException {
         List<FeePayment> list = new ArrayList<>();
         try (Connection conn = getConnection();
-             PreparedStatement stmt = conn.prepareStatement(SELECT_OVERDUE_SQL);
-             ResultSet rs = stmt.executeQuery()) {
+                PreparedStatement stmt = conn.prepareStatement(SELECT_OVERDUE_SQL);
+                ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 FeePayment fp = new FeePayment();
                 fp.setPaymentId(rs.getInt("PaymentID"));
@@ -113,7 +112,7 @@ public class FeePaymentDAO {
     public List<FeePayment> getUnpaidBeforeDate(Date date) throws SQLException {
         List<FeePayment> list = new ArrayList<>();
         try (Connection conn = getConnection();
-             PreparedStatement stmt = conn.prepareStatement(SELECT_UNPAID_SQL)) {
+                PreparedStatement stmt = conn.prepareStatement(SELECT_UNPAID_SQL)) {
             stmt.setDate(1, new java.sql.Date(date.getTime()));
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
@@ -134,7 +133,7 @@ public class FeePaymentDAO {
     public double getTotalCollection(Date fromDate, Date toDate) throws SQLException {
         double total = 0;
         try (Connection conn = getConnection();
-             PreparedStatement stmt = conn.prepareStatement(TOTAL_COLLECTION_SQL)) {
+                PreparedStatement stmt = conn.prepareStatement(TOTAL_COLLECTION_SQL)) {
             stmt.setDate(1, new java.sql.Date(fromDate.getTime()));
             stmt.setDate(2, new java.sql.Date(toDate.getTime()));
             try (ResultSet rs = stmt.executeQuery()) {
@@ -149,7 +148,7 @@ public class FeePaymentDAO {
     public List<FeePayment> getPaymentsBetweenDates(Date startDate, Date endDate) throws SQLException {
         List<FeePayment> list = new ArrayList<>();
         try (Connection conn = getConnection();
-             PreparedStatement stmt = conn.prepareStatement(SELECT_PAYMENTS_BETWEEN_DATES_SQL)) {
+                PreparedStatement stmt = conn.prepareStatement(SELECT_PAYMENTS_BETWEEN_DATES_SQL)) {
             stmt.setDate(1, new java.sql.Date(startDate.getTime()));
             stmt.setDate(2, new java.sql.Date(endDate.getTime()));
             try (ResultSet rs = stmt.executeQuery()) {
@@ -167,4 +166,20 @@ public class FeePaymentDAO {
         }
         return list;
     }
+
+    public double getTotalPaidAmount() throws SQLException {
+        double totalPaid = 0.0;
+
+        try (Connection conn = getConnection();
+                PreparedStatement stmt = conn.prepareStatement(TOTAL_PAID_SQL);
+                ResultSet rs = stmt.executeQuery()) {
+
+            if (rs.next()) {
+                totalPaid = rs.getDouble(1);
+            }
+        }
+
+        return totalPaid;
+    }
+
 }

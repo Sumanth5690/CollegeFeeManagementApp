@@ -21,7 +21,8 @@ public class UpdateFeePaymentServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         try {
             String paymentIdStr = request.getParameter("paymentId");
             String studentId = request.getParameter("studentId"); // ✅ added
@@ -32,10 +33,10 @@ public class UpdateFeePaymentServlet extends HttpServlet {
 
             // Validate required fields (studentId can be optional)
             if (paymentIdStr == null || studentName == null ||
-                dateStr == null || amountStr == null || status == null ||
-                paymentIdStr.trim().isEmpty() || studentName.trim().isEmpty() ||
-                dateStr.trim().isEmpty() || amountStr.trim().isEmpty() ||
-                status.trim().isEmpty()) {
+                    dateStr == null || amountStr == null || status == null ||
+                    paymentIdStr.trim().isEmpty() || studentName.trim().isEmpty() ||
+                    dateStr.trim().isEmpty() || amountStr.trim().isEmpty() ||
+                    status.trim().isEmpty()) {
                 throw new ServletException("All fields except Student ID are required.");
             }
 
@@ -46,7 +47,9 @@ public class UpdateFeePaymentServlet extends HttpServlet {
 
             FeePayment payment = new FeePayment();
             payment.setPaymentId(paymentId);
-            payment.setStudentId(studentId != null && !studentId.trim().isEmpty() ? studentId.trim() : null); // ✅ handle null/empty
+            payment.setStudentId(studentId != null && !studentId.trim().isEmpty() ? studentId.trim() : null); // ✅
+                                                                                                              // handle
+                                                                                                              // null/empty
             payment.setStudentName(studentName.trim());
             payment.setPaymentDate(paymentDate);
             payment.setAmount(amount);

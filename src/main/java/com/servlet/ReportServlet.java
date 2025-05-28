@@ -23,7 +23,8 @@ public class ReportServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         String reportType = request.getParameter("reportType");
         String startDate = request.getParameter("startDate");
         String endDate = request.getParameter("endDate");
@@ -47,15 +48,16 @@ public class ReportServlet extends HttpServlet {
 
                 case "total":
                     if (startDate == null || startDate.isEmpty() || endDate == null || endDate.isEmpty()) {
-                        throw new IllegalArgumentException("Start and end dates are required for total collection report.");
+                        throw new IllegalArgumentException(
+                                "Start and end dates are required for total collection report.");
                     }
                     java.sql.Date startDateParsed = java.sql.Date.valueOf(startDate);
                     java.sql.Date endDateParsed2 = java.sql.Date.valueOf(endDate);
-                    
+
                     // Get total amount
                     total = dao.getTotalCollection(startDateParsed, endDateParsed2);
                     request.setAttribute("totalCollection", total);
-                    
+
                     // Get actual payment records for display
                     reportData = dao.getPaymentsBetweenDates(startDateParsed, endDateParsed2);
                     break;
