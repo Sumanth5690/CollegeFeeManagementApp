@@ -6,211 +6,252 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Fee Payment Management System</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
     <style>
-      /* === Dark themed base === */
-      body {
-        background-color: #0f0f0f;
-        color: #e0e7ff;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        padding: 2rem 1rem;
-        min-height: 100vh;
-      }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
 
-      .main-container {
-        max-width: 1000px;
-        margin: auto;
-        background-color: #1e1e2f;
-        border-radius: 18px;
-        padding: 2rem 2.5rem;
-        box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
-      }
+        .main-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
 
-      /* Header */
-      .header-section {
-        text-align: center;
-        margin-bottom: 2rem;
-      }
-
-      .header-title {
-        font-size: 2.4rem;
-        font-weight: 900;
-        background: linear-gradient(90deg, #3b82f6, #9333ea);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        user-select: none;
-      }
-
-      .header-subtitle {
-        color: #94a3b8;
-        font-weight: 500;
-        margin-top: 0.25rem;
-        font-size: 1.1rem;
-        user-select: none;
-      }
-
-      /* Stats Grid */
-      .stats-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-        gap: 1.5rem;
-        margin-bottom: 2rem;
-      }
-
-      .stat-card {
-        background-color: #27272a;
-        border-radius: 14px;
-        padding: 1.5rem 1.25rem;
-        text-align: center;
-        box-shadow: 0 0 8px rgba(59, 130, 246, 0.25);
-        user-select: none;
-        transition: background-color 0.3s ease;
-      }
-
-      .stat-card:hover {
-        background-color: #3b82f6;
-        color: white;
-        cursor: default;
-      }
-
-      .stat-icon {
-        font-size: 2.2rem;
-        margin-bottom: 0.5rem;
-        color: #60a5fa;
-      }
-
-      .stat-number {
-        font-size: 1.8rem;
-        font-weight: 800;
-        margin-bottom: 0.25rem;
-      }
-
-      .stat-label {
-        font-weight: 600;
-        color: #a5b4fc;
-      }
-
-      /* Content Card for table and no data message */
-      .content-card {
-        background-color: #27272a;
-        border-radius: 18px;
-        padding: 1.75rem 1.5rem;
-        box-shadow: 0 0 14px rgba(59, 130, 246, 0.3);
-      }
-
-      /* Table Styles */
-      .data-table {
-        width: 100%;
-        border-collapse: separate;
-        border-spacing: 0;
-        color: #f1f5f9;
-      }
-
-      .table-header {
-        background-color: #3b3b46;
-        user-select: none;
-      }
-
-      .table-header th {
-        border-bottom: 2px solid #60a5fa;
-        padding: 0.85rem 1rem;
-        font-weight: 700;
-        font-size: 1rem;
-        color: #a5b4fc;
-      }
-
-      .data-table tbody tr {
-        background-color: #1f1f23;
-        transition: background-color 0.25s ease;
-        cursor: default;
-      }
-
-      .data-table tbody tr:hover {
-        background-color: #3b82f6;
-        color: white;
-      }
-
-      .data-table tbody td {
-        padding: 0.7rem 1rem;
-        vertical-align: middle;
-        font-size: 0.95rem;
-      }
-
-      .amount-cell {
-        font-weight: 700;
-      }
-
-      /* Status badges */
-      .status-badge {
-        padding: 0.35em 0.8em;
-        border-radius: 9999px;
-        font-weight: 600;
-        font-size: 0.85rem;
-        user-select: none;
-        display: inline-block;
-        min-width: 70px;
-        text-align: center;
-      }
-      .status-paid {
-        background-color: #22c55e;
-        color: #d1fae5;
-      }
-      .status-pending {
-        background-color: #facc15;
-        color: #713f12;
-      }
-      .status-overdue {
-        background-color: #ef4444;
-        color: #fef2f2;
-      }
-
-      /* No data illustration */
-      .no-data-illustration {
-        text-align: center;
-        color: #f87171;
-      }
-      .no-data-icon {
-        font-size: 5rem;
-        margin-bottom: 1rem;
-        opacity: 0.7;
-      }
-
-      /* Alerts style overrides */
-      .status-alert {
-        background-color: #2a2a37 !important;
-        border-color: #3b82f6 !important;
-        color: #cbd5e1 !important;
-        user-select: text;
-      }
-
-      .status-alert h4, .status-alert h5 {
-        color: #93c5fd !important;
-      }
-
-      /* Footer */
-      .footer-info {
-        margin-top: 2.5rem;
-        text-align: center;
-        font-size: 0.9rem;
-        color: #94a3b8;
-        user-select: none;
-      }
-
-      /* Responsive tweaks */
-      @media (max-width: 768px) {
-        .stats-grid {
-          grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        /* Header */
+        .header-section {
+            text-align: center;
+            margin-bottom: 30px;
         }
 
         .header-title {
-          font-size: 2rem;
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 5px;
         }
-      }
+
+        .header-subtitle {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+            margin: 0;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid #e9ecef;
+        }
+
+        .stat-card:hover {
+            background-color: #3498db;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .stat-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: #3498db;
+        }
+
+        .stat-card:hover .stat-icon {
+            color: white;
+        }
+
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-weight: 600;
+            color: #7f8c8d;
+        }
+
+        .stat-card:hover .stat-label {
+            color: white;
+        }
+
+        /* Content Card */
+        .content-card {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 25px;
+            border: 1px solid #e9ecef;
+        }
+
+        /* Table Styles */
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0;
+        }
+
+        .data-table th {
+            background-color: #3498db;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: bold;
+            border-bottom: 2px solid #2980b9;
+        }
+
+        .data-table td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .data-table tbody tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .data-table tbody tr:hover {
+            background-color: #e3f2fd;
+        }
+
+        .amount-cell {
+            font-weight: bold;
+        }
+
+        /* Status badges */
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            display: inline-block;
+            min-width: 70px;
+            text-align: center;
+        }
+
+        .status-paid {
+            background-color: #27ae60;
+            color: white;
+        }
+
+        .status-pending {
+            background-color: #f39c12;
+            color: white;
+        }
+
+        .status-overdue {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        /* No data illustration */
+        .no-data-illustration {
+            text-align: center;
+            color: #7f8c8d;
+            padding: 40px;
+        }
+
+        .no-data-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: #bdc3c7;
+        }
+
+        .no-data-illustration h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        /* Alerts */
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .alert-warning {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+        }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+
+        .alert h4, .alert h5 {
+            color: inherit;
+            margin-top: 0;
+        }
+
+        /* Footer */
+        .footer-info {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            border-top: 1px solid #e9ecef;
+            padding-top: 20px;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 20px;
+                margin: 10px;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 15px;
+            }
+
+            .header-title {
+                font-size: 1.8rem;
+            }
+
+            .data-table {
+                font-size: 0.9rem;
+            }
+
+            .data-table th,
+            .data-table td {
+                padding: 8px;
+            }
+        }
+
+        /* Font Awesome icons fallback */
+        .fas {
+            display: inline-block;
+            font-style: normal;
+            font-variant: normal;
+            text-rendering: auto;
+            line-height: 1;
+        }
     </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
 </head>
 <body>
-<div class="container main-container">
+<div class="main-container">
     <div class="header-section">
         <h1 class="header-title">
             <i class="fas fa-university"></i>
@@ -273,7 +314,7 @@
                     <i class="fas fa-inbox no-data-icon"></i>
                     <h3>No Payment Records Found</h3>
                     <p>The FeePayments table exists but contains no data records.</p>
-                    <div class="alert alert-warning status-alert mt-4">
+                    <div class="alert alert-warning">
                         <h5><i class="fas fa-exclamation-triangle"></i> Suggested Actions:</h5>
                         <p class="mb-2">To resolve this issue, please consider the following steps:</p>
                         <p class="mb-1">• Insert sample data into the FeePayments table</p>
@@ -298,12 +339,12 @@
                     <div class="stat-label">Total Amount</div>
                 </div>
                 <div class="stat-card">
-                    <i class="fas fa-check-circle stat-icon" style="color: #22c55e;"></i>
+                    <i class="fas fa-check-circle stat-icon"></i>
                     <div class="stat-number"><%= paidCount %></div>
                     <div class="stat-label">Paid</div>
                 </div>
                 <div class="stat-card">
-                    <i class="fas fa-exclamation-triangle stat-icon" style="color: #facc15;"></i>
+                    <i class="fas fa-exclamation-triangle stat-icon"></i>
                     <div class="stat-number"><%= overdueCount + pendingCount %></div>
                     <div class="stat-label">Pending/Overdue</div>
                 </div>
@@ -312,8 +353,8 @@
             <!-- Payment Records Table -->
             <div class="content-card">
                 <div class="table-responsive">
-                    <table class="table data-table mb-0">
-                        <thead class="table-header">
+                    <table class="data-table">
+                        <thead>
                             <tr>
                                 <th><i class="fas fa-hashtag"></i> Payment ID</th>
                                 <th><i class="fas fa-user-graduate"></i> Student ID</th>
@@ -351,7 +392,7 @@
 
     } catch (ClassNotFoundException e) {
     %>
-        <div class="alert alert-danger status-alert">
+        <div class="alert alert-danger">
             <h4><i class="fas fa-exclamation-circle"></i> Driver Configuration Error</h4>
             <p><strong>Issue:</strong> MySQL JDBC Driver not found in classpath.</p>
             <p><strong>Details:</strong> <%= e.getMessage() %></p>
@@ -360,11 +401,11 @@
     <%
     } catch (SQLException e) {
     %>
-        <div class="alert alert-danger status-alert">
+        <div class="alert alert-danger">
             <h4><i class="fas fa-database"></i> Database Connection Error</h4>
             <p><strong>Issue:</strong> Failed to connect to database or execute query.</p>
             <p><strong>Details:</strong> <%= e.getMessage() %></p>
-            <div class="mt-3">
+            <div style="margin-top: 15px;">
                 <p><strong>Possible Causes:</strong></p>
                 <p>• MySQL server is not running on localhost:3306</p>
                 <p>• Database 'college_fees' does not exist</p>
@@ -375,13 +416,9 @@
     <%
     } catch (Exception e) {
     %>
-        <div class="alert alert-danger status-alert">
+        <div class="alert alert-danger">
             <h4><i class="fas fa-bug"></i> Unexpected System Error</h4>
             <p><strong>Error:</strong> <%= e.getMessage() %></p>
-            <details class="mt-3">
-                <summary>View Technical Details</summary>
-                <pre class="mt-2" style="background: #f8f9fa; padding: 1rem; border-radius: 8px; font-size: 0.8rem;"><%= java.util.Arrays.toString(e.getStackTrace()) %></pre>
-            </details>
         </div>
     <%
     } finally {
@@ -391,17 +428,15 @@
             if (stmt != null) stmt.close();
             if (conn != null) conn.close();
         } catch (SQLException e) {
-            out.println("<div class='alert alert-warning status-alert'><i class='fas fa-exclamation-triangle'></i> Warning: Error closing database resources: " + e.getMessage() + "</div>");
+            out.println("<div class='alert alert-warning'><i class='fas fa-exclamation-triangle'></i> Warning: Error closing database resources: " + e.getMessage() + "</div>");
         }
     }
     %>
 
     <div class="footer-info">
         <p><i class="fas fa-info-circle"></i> Fee Payment Management System | Database: college_fees | Table: FeePayments</p>
-        <p class="mb-0"><small>System automatically refreshes data on each page load</small></p>
+        <p style="margin: 5px 0 0 0;"><small>System automatically refreshes data on each page load</small></p>
     </div>
 </div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

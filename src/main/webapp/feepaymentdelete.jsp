@@ -1,349 +1,603 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page import="java.sql.*, java.util.*" %>
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
-    <title>Delete Fee Payment</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-      rel="stylesheet"
-    />
+    <title>Fee Payment Management System</title>
     <style>
-      /* === Base Styles === */
-      body {
-        margin: 0;
-        font-family: "Segoe UI", sans-serif;
-        background-color: #0f0f0f;
-        color: #f1f5f9;
-        display: flex;
-        justify-content: center;
-        padding: 2rem;
-      }
-
-      .container {
-        background-color: #18181b;
-        border-radius: 16px;
-        padding: 2rem;
-        width: 100%;
-        max-width: 640px;
-        border: 1px solid #27272a;
-      }
-
-      a.back-link {
-        display: inline-block;
-        margin-bottom: 1rem;
-        color: #60a5fa;
-        text-decoration: none;
-        font-size: 0.9rem;
-      }
-      a.back-link i {
-        margin-right: 0.3rem;
-      }
-
-      h2 {
-        font-size: 2rem;
-        background: linear-gradient(to right, #d1d5db, #3b82f6);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        font-weight: 700;
-        text-align: center;
-        margin-bottom: 0.25rem;
-      }
-
-      .subtitle {
-        text-align: center;
-        font-size: 1rem;
-        color: #94a3b8;
-        margin-bottom: 2rem;
-      }
-
-      h3 {
-        font-weight: 600;
-        color: #cbd5e1;
-        margin-top: 2rem;
-        margin-bottom: 0.5rem;
-      }
-
-      p.warning-text {
-        color: #f87171; /* light red */
-        font-size: 0.95rem;
-        margin-bottom: 1.5rem;
-        line-height: 1.4;
-      }
-
-      /* === Form Styles === */
-      form {
-        margin-top: 1rem;
-      }
-
-      .form-group {
-        margin-bottom: 1.5rem;
-      }
-
-      label {
-        display: block;
-        margin-bottom: 0.5rem;
-        font-weight: 500;
-        color: #e2e8f0;
-      }
-
-      input[type="text"],
-      input[type="checkbox"] {
-        font-size: 1rem;
-        border-radius: 12px;
-        border: 1px solid #3f3f46;
-        background-color: #1f1f23;
-        color: #f1f5f9;
-        padding: 0.75rem;
-        width: 100%;
-        box-sizing: border-box;
-        transition: border-color 0.2s, background-color 0.2s;
-      }
-
-      input[type="text"]:focus {
-        border-color: #3b82f6;
-        outline: none;
-        background-color: #27272a;
-      }
-
-      /* Checkbox styling container */
-      .checkbox-group {
-        display: flex;
-        align-items: flex-start;
-        gap: 0.75rem;
-        margin-bottom: 1.5rem;
-      }
-      .checkbox-group input[type="checkbox"] {
-        width: auto;
-        margin-top: 4px;
-        flex-shrink: 0;
-      }
-      .checkbox-group label {
-        flex: 1;
-        font-size: 0.95rem;
-        color: #cbd5e1;
-        cursor: pointer;
-        user-select: none;
-        line-height: 1.3;
-      }
-
-      /* Payment preview box */
-      #paymentPreview {
-        background-color: #27272a;
-        border-radius: 12px;
-        padding: 1rem;
-        margin-bottom: 1.5rem;
-        display: none;
-        color: #f1f5f9;
-      }
-      #paymentPreview > div:first-child {
-        font-weight: 600;
-        margin-bottom: 0.75rem;
-        color: #3b82f6;
-      }
-      #previewDetails div {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 0.4rem;
-        font-size: 0.95rem;
-      }
-      #previewDetails div span:first-child {
-        color: #94a3b8;
-      }
-
-      /* Form action buttons container */
-      .form-actions {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 1rem;
-        flex-wrap: wrap;
-      }
-      .form-actions a.cancel-link {
-        color: #60a5fa;
-        text-decoration: none;
-        font-size: 0.95rem;
-        padding: 0.75rem 1.25rem;
-        border-radius: 12px;
-        border: 1px solid #3b82f6;
-        transition: background-color 0.2s;
-        flex-grow: 1;
-        text-align: center;
-      }
-      .form-actions a.cancel-link:hover {
-        background-color: #3b82f6;
-        color: white;
-      }
-
-      button#deleteBtn {
-        flex-grow: 2;
-        background: linear-gradient(to right, #dc2626, #ef4444);
-        border: none;
-        border-radius: 12px;
-        padding: 0.75rem 1.5rem;
-        color: white;
-        font-size: 1rem;
-        cursor: pointer;
-        transition: background 0.2s ease;
-        user-select: none;
-      }
-      button#deleteBtn:disabled {
-        background: #7f1d1d;
-        cursor: not-allowed;
-      }
-      button#deleteBtn:hover:not(:disabled) {
-        background: linear-gradient(to right, #b91c1c, #ef4444);
-      }
-
-      /* Responsive */
-      @media (max-width: 640px) {
-        .form-actions {
-          flex-direction: column;
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            margin: 0;
+            padding: 20px;
         }
-        .form-actions a.cancel-link,
-        button#deleteBtn {
-          flex-grow: unset;
-          width: 100%;
+
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-      }
+
+        /* Header */
+        .header-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header-title {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .header-subtitle {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+            margin: 0;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid #e9ecef;
+        }
+
+        .stat-card:hover {
+            background-color: #3498db;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .stat-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: #3498db;
+        }
+
+        .stat-card:hover .stat-icon {
+            color: white;
+        }
+
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-weight: 600;
+            color: #7f8c8d;
+        }
+
+        .stat-card:hover .stat-label {
+            color: white;
+        }
+
+        /* Content Card */
+        .content-card {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 25px;
+            border: 1px solid #e9ecef;
+        }
+
+        /* Table Styles */
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0;
+        }
+
+        .data-table th {
+            background-color: #3498db;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: bold;
+            border-bottom: 2px solid #2980b9;
+        }
+
+        .data-table td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .data-table tbody tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .data-table tbody tr:hover {
+            background-color: #e3f2fd;
+        }
+
+        .amount-cell {
+            font-weight: bold;
+        }
+
+        /* Status badges */
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            display: inline-block;
+            min-width: 70px;
+            text-align: center;
+        }
+
+        .status-paid {
+            background-color: #27ae60;
+            color: white;
+        }
+
+        .status-pending {
+            background-color: #f39c12;
+            color: white;
+        }
+
+        .status-overdue {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        /* Delete Button */
+        .delete-btn {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: background-color 0.3s;
+        }
+
+        .delete-btn:hover {
+            background-color: #c0392b;
+        }
+
+        .delete-btn:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+
+        /* Messages */
+        .message {
+            padding: 12px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+
+        .message-success {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+
+        .message-error {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+
+        /* No data illustration */
+        .no-data-illustration {
+            text-align: center;
+            color: #7f8c8d;
+            padding: 40px;
+        }
+
+        .no-data-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: #bdc3c7;
+        }
+
+        .no-data-illustration h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        /* Alerts */
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .alert-warning {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+        }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+
+        .alert h4, .alert h5 {
+            color: inherit;
+            margin-top: 0;
+        }
+
+        /* Footer */
+        .footer-info {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            border-top: 1px solid #e9ecef;
+            padding-top: 20px;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 15% auto;
+            padding: 20px;
+            border-radius: 8px;
+            width: 400px;
+            text-align: center;
+        }
+
+        .modal-buttons {
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            margin: 0 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-danger {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 20px;
+                margin: 10px;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 15px;
+            }
+
+            .header-title {
+                font-size: 1.8rem;
+            }
+
+            .data-table {
+                font-size: 0.9rem;
+            }
+
+            .data-table th,
+            .data-table td {
+                padding: 8px;
+            }
+        }
     </style>
-  </head>
-  <body>
-    <div class="container">
-      <a href="index.jsp" class="back-link"
-        ><i class="fas fa-arrow-left"></i> Back to Dashboard</a
-      >
-
-      <h2>Delete Fee Payment</h2>
-      <p class="subtitle">Remove payment record from system</p>
-
-      <h3>Permanent Action Warning</h3>
-      <p class="warning-text">
-        This action cannot be undone. The payment record will be permanently
-        removed from the system and cannot be recovered.
-      </p>
-
-      <form action="deletePayment" method="post" id="deleteForm" novalidate>
-        <div class="form-group">
-          <label for="paymentId">Payment ID</label>
-          <input
-            type="text"
-            id="paymentId"
-            name="paymentId"
-            placeholder="Enter payment ID to delete"
-            required
-            autocomplete="off"
-            pattern="[A-Za-z0-9]+"
-            title="Alphanumeric characters only"
-          />
-        </div>
-
-        <div id="paymentPreview">
-          <div>Payment Record Preview</div>
-          <div id="previewDetails"><!-- Dynamic preview inserted here --></div>
-        </div>
-
-        <div class="checkbox-group">
-          <input type="checkbox" id="confirmDelete" />
-          <label for="confirmDelete">
-            I understand that this action is permanent and cannot be reversed. I
-            confirm that I want to delete this payment record.
-          </label>
-        </div>
-
-        <div class="form-actions">
-          <a href="index.jsp" class="cancel-link">Cancel</a>
-          <button type="submit" id="deleteBtn" disabled>
-            <i class="fas fa-trash-alt"></i> Delete Payment
-          </button>
-        </div>
-      </form>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+</head>
+<body>
+<div class="main-container">
+    <div class="header-section">
+        <h1 class="header-title">
+            <i class="fas fa-university"></i>
+            Fee Payment Management
+        </h1>
+        <p class="header-subtitle">Comprehensive Student Fee Tracking System</p>
     </div>
 
-    <script>
-      // Form elements
-      const deleteForm = document.getElementById("deleteForm");
-      const paymentIdInput = document.getElementById("paymentId");
-      const confirmCheckbox = document.getElementById("confirmDelete");
-      const deleteButton = document.getElementById("deleteBtn");
-      const paymentPreview = document.getElementById("paymentPreview");
-      const previewDetails = document.getElementById("previewDetails");
+    <%
+    // Display messages
+    String message = request.getParameter("message");
+    String error = request.getParameter("error");
+    
+    if (message != null && !message.trim().isEmpty()) {
+    %>
+        <div class="message message-success">
+            <i class="fas fa-check-circle"></i> <%= message %>
+        </div>
+    <%
+    }
+    
+    if (error != null && !error.trim().isEmpty()) {
+    %>
+        <div class="message message-error">
+            <i class="fas fa-exclamation-circle"></i> <%= error %>
+        </div>
+    <%
+    }
+    %>
 
-      // Enable/disable delete button based on confirmation & input
-      function updateDeleteButtonState() {
-        const hasPaymentId = paymentIdInput.value.trim().length > 0;
-        const isConfirmed = confirmCheckbox.checked;
-        deleteButton.disabled = !(hasPaymentId && isConfirmed);
-      }
+    <%
+    Connection conn = null;
+    PreparedStatement stmt = null;
+    ResultSet rs = null;
+    int totalRecords = 0;
+    double totalAmount = 0;
+    int paidCount = 0, pendingCount = 0, overdueCount = 0;
 
-      confirmCheckbox.addEventListener("change", updateDeleteButtonState);
-      paymentIdInput.addEventListener("input", function (e) {
-        // Auto-uppercase & strip non-alphanumeric
-        e.target.value = e.target.value
-          .replace(/[^a-zA-Z0-9]/g, "")
-          .toUpperCase();
+    try {
+        // Database connection parameters
+        String jdbcURL = "jdbc:mysql://localhost:3306/college_fees";
+        String jdbcUsername = "root";
+        String jdbcPassword = "";
 
-        updateDeleteButtonState();
+        // Load MySQL JDBC driver
+        Class.forName("com.mysql.cj.jdbc.Driver");
 
-        // Show preview if length >= 3
-        if (e.target.value.length >= 3) {
-          simulatePaymentLookup(e.target.value);
+        // Establish connection
+        conn = DriverManager.getConnection(jdbcURL, jdbcUsername, jdbcPassword);
+
+        // Execute query
+        String sql = "SELECT * FROM FeePayments ORDER BY PaymentDate DESC";
+        stmt = conn.prepareStatement(sql);
+        rs = stmt.executeQuery();
+
+        // Collect records and calculate statistics
+        List<Map<String, Object>> records = new ArrayList<>();
+
+        while (rs.next()) {
+            Map<String, Object> record = new HashMap<>();
+            record.put("PaymentID", rs.getInt("PaymentID"));
+            record.put("StudentID", rs.getInt("StudentID"));
+            record.put("StudentName", rs.getString("StudentName"));
+            record.put("PaymentDate", rs.getDate("PaymentDate"));
+            record.put("Amount", rs.getDouble("Amount"));
+            record.put("Status", rs.getString("Status"));
+            records.add(record);
+
+            totalRecords++;
+            totalAmount += rs.getDouble("Amount");
+
+            String status = rs.getString("Status");
+            if ("Paid".equalsIgnoreCase(status)) paidCount++;
+            else if ("Pending".equalsIgnoreCase(status)) pendingCount++;
+            else if ("Overdue".equalsIgnoreCase(status)) overdueCount++;
+        }
+
+        if (totalRecords == 0) {
+    %>
+            <div class="content-card">
+                <div class="no-data-illustration">
+                    <i class="fas fa-inbox no-data-icon"></i>
+                    <h3>No Payment Records Found</h3>
+                    <p>The FeePayments table exists but contains no data records.</p>
+                    <div class="alert alert-warning">
+                        <h5><i class="fas fa-exclamation-triangle"></i> Suggested Actions:</h5>
+                        <p class="mb-2">To resolve this issue, please consider the following steps:</p>
+                        <p class="mb-1">• Insert sample data into the FeePayments table</p>
+                        <p class="mb-1">• Verify table structure matches expected schema</p>
+                        <p class="mb-0">• Check if data exists using MySQL Workbench or command line</p>
+                    </div>
+                </div>
+            </div>
+    <%
         } else {
-          paymentPreview.style.display = "none";
+    %>
+            <!-- Statistics Dashboard -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <i class="fas fa-receipt stat-icon"></i>
+                    <div class="stat-number"><%= totalRecords %></div>
+                    <div class="stat-label">Total Payments</div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-rupee-sign stat-icon"></i>
+                    <div class="stat-number">₹<%= String.format("%.2f", totalAmount) %></div>
+                    <div class="stat-label">Total Amount</div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-check-circle stat-icon"></i>
+                    <div class="stat-number"><%= paidCount %></div>
+                    <div class="stat-label">Paid</div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-exclamation-triangle stat-icon"></i>
+                    <div class="stat-number"><%= overdueCount + pendingCount %></div>
+                    <div class="stat-label">Pending/Overdue</div>
+                </div>
+            </div>
+
+            <!-- Payment Records Table -->
+            <div class="content-card">
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th><i class="fas fa-hashtag"></i> Payment ID</th>
+                                <th><i class="fas fa-user-graduate"></i> Student ID</th>
+                                <th><i class="fas fa-user"></i> Student Name</th>
+                                <th><i class="fas fa-calendar"></i> Payment Date</th>
+                                <th><i class="fas fa-rupee-sign"></i> Amount</th>
+                                <th><i class="fas fa-info-circle"></i> Status</th>
+                                <th><i class="fas fa-cogs"></i> Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+        <%
+                for (Map<String, Object> record : records) {
+                    String status = (String) record.get("Status");
+                    String statusClass = "status-pending";
+                    if ("Paid".equalsIgnoreCase(status)) statusClass = "status-paid";
+                    else if ("Overdue".equalsIgnoreCase(status)) statusClass = "status-overdue";
+        %>
+                            <tr>
+                                <td><strong><%= record.get("PaymentID") %></strong></td>
+                                <td><%= record.get("StudentID") %></td>
+                                <td><%= record.get("StudentName") %></td>
+                                <td><%= record.get("PaymentDate") %></td>
+                                <td class="amount-cell">₹<%= String.format("%.2f", (Double) record.get("Amount")) %></td>
+                                <td><span class="status-badge <%= statusClass %>"><%= record.get("Status") %></span></td>
+                                <td>
+                                    <button class="delete-btn" onclick="confirmDelete(<%= record.get("PaymentID") %>)">
+                                        <i class="fas fa-trash"></i> Delete
+                                    </button>
+                                </td>
+                            </tr>
+        <%
+                }
+        %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+    <%
         }
-      });
 
-      // Simulate payment record lookup (replace with real AJAX call)
-      function simulatePaymentLookup(paymentId) {
-        setTimeout(() => {
-          const mockPaymentData = {
-            id: paymentId,
-            studentId: "STU" + Math.floor(Math.random() * 10000),
-            studentName: "Sample Student Name",
-            amount: "₹" + (Math.random() * 5000 + 500).toFixed(2),
-            date: new Date().toLocaleDateString(),
-            status: Math.random() > 0.5 ? "Paid" : "Overdue",
-          };
-          displayPaymentPreview(mockPaymentData);
-        }, 500);
-      }
-
-      function displayPaymentPreview(paymentData) {
-        previewDetails.innerHTML = `
-        <div><span>Payment ID:</span><span>${paymentData.id}</span></div>
-        <div><span>Student ID:</span><span>${paymentData.studentId}</span></div>
-        <div><span>Student Name:</span><span>${paymentData.studentName}</span></div>
-        <div><span>Amount:</span><span>${paymentData.amount}</span></div>
-        <div><span>Date:</span><span>${paymentData.date}</span></div>
-        <div><span>Status:</span><span>${paymentData.status}</span></div>
-      `;
-        paymentPreview.style.display = "block";
-      }
-
-      deleteForm.addEventListener("submit", function (e) {
-        if (!confirmCheckbox.checked) {
-          alert(
-            "Please confirm that you understand this action cannot be undone."
-          );
-          e.preventDefault();
-          return;
+    } catch (ClassNotFoundException e) {
+    %>
+        <div class="alert alert-danger">
+            <h4><i class="fas fa-exclamation-circle"></i> Driver Configuration Error</h4>
+            <p><strong>Issue:</strong> MySQL JDBC Driver not found in classpath.</p>
+            <p><strong>Details:</strong> <%= e.getMessage() %></p>
+            <p><strong>Solution:</strong> Ensure mysql-connector-java JAR is included in your project dependencies.</p>
+        </div>
+    <%
+    } catch (SQLException e) {
+    %>
+        <div class="alert alert-danger">
+            <h4><i class="fas fa-database"></i> Database Connection Error</h4>
+            <p><strong>Issue:</strong> Failed to connect to database or execute query.</p>
+            <p><strong>Details:</strong> <%= e.getMessage() %></p>
+            <div style="margin-top: 15px;">
+                <p><strong>Possible Causes:</strong></p>
+                <p>• MySQL server is not running on localhost:3306</p>
+                <p>• Database 'college_fees' does not exist</p>
+                <p>• Table 'FeePayments' does not exist</p>
+                <p>• Connection credentials are incorrect</p>
+            </div>
+        </div>
+    <%
+    } catch (Exception e) {
+    %>
+        <div class="alert alert-danger">
+            <h4><i class="fas fa-bug"></i> Unexpected System Error</h4>
+            <p><strong>Error:</strong> <%= e.getMessage() %></p>
+        </div>
+    <%
+    } finally {
+        // Clean up resources
+        try {
+            if (rs != null) rs.close();
+            if (stmt != null) stmt.close();
+            if (conn != null) conn.close();
+        } catch (SQLException e) {
+            out.println("<div class='alert alert-warning'><i class='fas fa-exclamation-triangle'></i> Warning: Error closing database resources: " + e.getMessage() + "</div>");
         }
+    }
+    %>
 
-        if (!paymentIdInput.value.trim()) {
-          alert("Please enter a valid Payment ID.");
-          e.preventDefault();
-          return;
-        }
+    <div class="footer-info">
+        <p><i class="fas fa-info-circle"></i> Fee Payment Management System | Database: college_fees | Table: FeePayments</p>
+        <p style="margin: 5px 0 0 0;"><small>System automatically refreshes data on each page load</small></p>
+    </div>
+</div>
 
-        const confirmed = confirm(
-          "Are you absolutely sure you want to delete this payment record? This action cannot be undone."
-        );
-        if (!confirmed) {
-          e.preventDefault();
-          return;
-        }
-      });
-    </script>
-  </body>
+<!-- Delete Confirmation Modal -->
+<div id="deleteModal" class="modal">
+    <div class="modal-content">
+        <h3><i class="fas fa-exclamation-triangle" style="color: #e74c3c;"></i> Confirm Delete</h3>
+        <p>Are you sure you want to delete this payment record?</p>
+        <p><strong>Payment ID: <span id="deletePaymentId"></span></strong></p>
+        <div class="modal-buttons">
+            <button class="btn btn-danger" onclick="deletePayment()">
+                <i class="fas fa-trash"></i> Delete
+            </button>
+            <button class="btn btn-secondary" onclick="closeModal()">
+                <i class="fas fa-times"></i> Cancel
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+let paymentToDelete = null;
+
+function confirmDelete(paymentId) {
+    paymentToDelete = paymentId;
+    document.getElementById('deletePaymentId').textContent = paymentId;
+    document.getElementById('deleteModal').style.display = 'block';
+}
+
+function closeModal() {
+    document.getElementById('deleteModal').style.display = 'none';
+    paymentToDelete = null;
+}
+
+function deletePayment() {
+    if (paymentToDelete) {
+        // Create a form and submit it
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = 'deletePayment';
+        
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'paymentId';
+        input.value = paymentToDelete;
+        
+        form.appendChild(input);
+        document.body.appendChild(form);
+        form.submit();
+    }
+}
+
+// Close modal when clicking outside
+window.onclick = function(event) {
+    const modal = document.getElementById('deleteModal');
+    if (event.target === modal) {
+        closeModal();
+    }
+}
+</script>
+</body>
 </html>
